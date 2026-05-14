@@ -265,8 +265,12 @@
     border-radius: 999px;
     transition: color 0.3s, background 0.3s;
   }
-  nav.navbar a:hover, nav.navbar a.active { color: var(--text); background: rgba(0,0,0,0.05); }
-  body:not([data-theme="paper"]) nav.navbar a:hover { background: rgba(255,255,255,0.05); }
+  nav.navbar a.active { color: var(--text); background: rgba(0,0,0,0.05); }
+  /* Hover only applies on devices that actually have a hover capability — prevents touch "stuck-hover" */
+  @media (hover: hover) {
+    nav.navbar a:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    body:not([data-theme="paper"]) nav.navbar a:hover { background: rgba(255,255,255,0.05); }
+  }
   .nav-cta { color: #fff !important; background: var(--accent); }
   .nav-cta:hover { background: var(--accent) !important; opacity: 0.9; color: #fff !important; }
 
@@ -489,18 +493,14 @@
   @media (max-width: 768px) {
     .container { padding: 0 20px; }
 
-    /* Nav — make it scrollable so all links fit */
+    /* Nav — collapse to just the Hire-me CTA on mobile */
     nav.navbar {
       top: 16px;
-      padding: 6px;
-      gap: 2px;
-      font-size: 12px;
-      max-width: calc(100vw - 32px);
-      overflow-x: auto;
-      scrollbar-width: none;
+      padding: 4px;
+      gap: 0;
     }
-    nav.navbar::-webkit-scrollbar { display: none; }
-    nav.navbar a { padding: 7px 12px; white-space: nowrap; }
+    nav.navbar a:not(.nav-cta) { display: none; }
+    nav.navbar a.nav-cta { padding: 9px 18px; font-size: 13px; white-space: nowrap; }
 
     /* Hero */
     .hero { padding-top: 96px; min-height: auto; }
@@ -1908,14 +1908,18 @@ window.addEventListener('load', () => { setTimeout(() => document.querySelectorA
   document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
   const sections = document.querySelectorAll('section[id]');
   const links = document.querySelectorAll('nav.navbar a');
+  // Track each section's current visibility ratio — always activate only the most-visible one
+  const visibility = new Map();
   const navObs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        const id = e.target.id;
-        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
-      }
+      visibility.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
     });
-  }, { threshold: 0.4 });
+    let bestId = null, bestRatio = 0;
+    visibility.forEach((ratio, id) => {
+      if (ratio > bestRatio) { bestId = id; bestRatio = ratio; }
+    });
+    links.forEach(l => l.classList.toggle('active', !!bestId && l.getAttribute('href') === '#' + bestId));
+  }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
   sections.forEach(s => navObs.observe(s));
 })();
 document.querySelectorAll('.skill').forEach(card => {
