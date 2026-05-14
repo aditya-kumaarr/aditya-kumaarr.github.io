@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>404 — Page not found · Aditya Kumar</title>
+<meta name="description" content="The page you were looking for doesn't exist." />
+<meta name="robots" content="noindex" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23dc2626'/%3E%3Ctext x='50' y='68' font-family='Inter,sans-serif' font-size='58' font-weight='700' text-anchor='middle' fill='%23f1ece0'%3EA%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Playfair+Display:ital,wght@1,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #f1ece0; color: #1a1a1a; min-height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+    padding: 32px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* Paper grain texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.45;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    z-index: 0;
+  }
+  /* Soft red glow */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,38,38,0.18), transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  main { position: relative; z-index: 1; text-align: center; max-width: 720px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #dc2626;
+    padding: 8px 18px;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    background: rgba(220, 38, 38, 0.06);
+    border-radius: 999px;
+    margin-bottom: 36px;
+  }
+  .dot { width: 7px; height: 7px; background: #dc2626; border-radius: 50%; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(96px, 18vw, 220px);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+  }
+  h1 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #dc2626;
+    font-size: 0.5em;
+    vertical-align: super;
+  }
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  h2 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #dc2626;
+  }
+  p {
+    color: #525252;
+    font-size: 17px;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  .btn {
+    padding: 16px 28px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: inherit;
+  }
+  .btn-primary { background: #dc2626; color: #fff; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(220,38,38,0.3); }
+  .btn-ghost { background: transparent; color: #1a1a1a; border-color: rgba(0,0,0,0.15); }
+  .btn-ghost:hover { border-color: #dc2626; color: #dc2626; }
+  .btn .arrow { transition: transform 0.3s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+  footer {
+    position: fixed;
+    bottom: 24px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: #a3a3a3;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow"><span class="dot"></span>404 · Page not found</div>
+  <h1>4<em>0</em>4</h1>
+  <h2>This page seems to have <em>wandered off.</em></h2>
+  <p>The link you followed might be broken, or the page may have moved. Let's get you back to the portfolio.</p>
+  <div class="actions">
+    <a href="index.html" class="btn btn-primary"><span>Back to portfolio</span><span class="arrow">→</span></a>
+    <a href="mailto:adityaakumaarr@gmail.com" class="btn btn-ghost"><span>Email me instead</span></a>
+  </div>
+</main>
+<footer>© 2026 Aditya Kumar · Gurugram, IN</footer>
+</body>
+</html>
