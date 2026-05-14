@@ -493,14 +493,22 @@
   @media (max-width: 768px) {
     .container { padding: 0 20px; }
 
-    /* Nav — collapse to just the Hire-me CTA on mobile */
+    /* Nav — horizontal scrollable strip; auto-scrolls to keep the active section in view */
     nav.navbar {
       top: 16px;
-      padding: 4px;
-      gap: 0;
+      padding: 6px;
+      gap: 2px;
+      font-size: 12px;
+      max-width: calc(100vw - 32px);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
     }
-    nav.navbar a:not(.nav-cta) { display: none; }
-    nav.navbar a.nav-cta { padding: 9px 18px; font-size: 13px; white-space: nowrap; }
+    nav.navbar::-webkit-scrollbar { display: none; }
+    nav.navbar a { padding: 8px 14px; white-space: nowrap; flex-shrink: 0; }
+    nav.navbar a.nav-cta { padding: 8px 16px; }
 
     /* Hero */
     .hero { padding-top: 96px; min-height: auto; }
@@ -1907,9 +1915,11 @@ window.addEventListener('load', () => { setTimeout(() => document.querySelectorA
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
   const sections = document.querySelectorAll('section[id]');
+  const navEl = document.querySelector('nav.navbar');
   const links = document.querySelectorAll('nav.navbar a');
   // Track each section's current visibility ratio — always activate only the most-visible one
   const visibility = new Map();
+  let lastActive = null;
   const navObs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       visibility.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
@@ -1918,7 +1928,18 @@ window.addEventListener('load', () => { setTimeout(() => document.querySelectorA
     visibility.forEach((ratio, id) => {
       if (ratio > bestRatio) { bestId = id; bestRatio = ratio; }
     });
-    links.forEach(l => l.classList.toggle('active', !!bestId && l.getAttribute('href') === '#' + bestId));
+    if (bestId && bestId !== lastActive) {
+      lastActive = bestId;
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + bestId));
+      // On phones, auto-scroll the nav strip so the active link slides into view
+      if (window.innerWidth < 768 && navEl) {
+        const activeLink = navEl.querySelector('a.active');
+        if (activeLink) {
+          const target = activeLink.offsetLeft - navEl.clientWidth / 2 + activeLink.offsetWidth / 2;
+          navEl.scrollTo({ left: target, behavior: 'smooth' });
+        }
+      }
+    }
   }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
   sections.forEach(s => navObs.observe(s));
 })();
